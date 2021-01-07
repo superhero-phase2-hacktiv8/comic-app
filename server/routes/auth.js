@@ -5,5 +5,4 @@ router.post('/login', authController.login)
 router.post('/loginGoogle', authController.loginGoogle)
 router.post('/register', authController.register)
 
-
 module.exports = router;

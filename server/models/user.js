@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             // define association here
         }
+
+        fullname() {
+            return `${this.firstName} ${this.lastName}`
+        }
     };
     User.init({
         firstName: {
@@ -39,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
                     msg: 'field email is required'
                 },
                 isEmail: {
-                    msg: 'invalid emai'
+                    msg: 'invalid email'
                 }
             },
             unique: true
