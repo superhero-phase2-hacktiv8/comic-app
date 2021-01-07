@@ -1,3 +1,4 @@
+const { Character } = require('../models');
 const axios = require('axios');
 const baseUrl = 'https://comicvine.gamespot.com/api'
 const COMICVINE_API_KEY = process.env.COMICVINE_API_KEY;
@@ -25,7 +26,26 @@ class CharController {
       next(err);
     }
   }
+  // Cari character favorite user
+  static async findCharsByUserId(req, res, next) {
+    try {
+      const UserId = +req.params.id;
+      const charIds = await Character.findAll({
+        attributes: ['character_id'],
+        where: {UserId},
+        raw: true
+      })
+      console.log(charIds);
+      const charId = charIds[0].character_id;
+      const response = await axios.get(`${baseUrl}/characters/?api_key=${COMICVINE_API_KEY}&format=json&filter=id:${charId}`);
+      res.status(200).json(response.data);
+    }
+    catch (err) {
+      next(err);
+    }
+  }
 }
+
 
 
 module.exports = CharController;
