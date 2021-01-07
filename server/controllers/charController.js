@@ -30,7 +30,11 @@ class CharController {
   static async findCharsByUserId(req, res, next) {
     try {
       const UserId = +req.params.id;
-      const charIds = await Character.findAll();
+      const charIds = await Character.findAll({
+        attributes: ['character_id'],
+        where: {UserId},
+        raw: true
+      })
       console.log(charIds);
       const charId = charIds[0].character_id;
       const response = await axios.get(`${baseUrl}/characters/?api_key=${COMICVINE_API_KEY}&format=json&filter=id:${charId}`);

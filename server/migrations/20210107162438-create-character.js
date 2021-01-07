@@ -25,7 +25,7 @@ module.exports = {
       },
       imgUrl: {
        type: Sequelize.STRING
-      },
+       }
       character_id: {
         type: Sequelize.INTEGER
       },
