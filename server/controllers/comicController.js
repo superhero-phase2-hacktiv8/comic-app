@@ -1,7 +1,7 @@
 class ComicController {
-  static getAllComics(req, res, next) {
-    res.send('Get all comics lewat controller');
-  }
+    static getAllComics(req, res, next) {
+        res.send('Get all comics lewat controller');
+    }
 }
 
 
