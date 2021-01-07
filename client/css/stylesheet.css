@@ -3,3 +3,30 @@
     background-position: center;
     background-size: cover;
 }
+
+  .character-container .card {
+    width: 150px;
+    height: 180px;
+    align-items: center;
+    margin: 0 20px;
+  }
+  
+  .card img {
+    width: 150px;
+    height: 180px;
+    object-fit: cover;
+  
+  }
+   
+  .heart {
+    position: absolute;
+    color: red;
+    font-size: 2.5em;
+    display: none;
+  }
+  
+  .img-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

@@ -162,6 +162,11 @@ $('#btnRegister').click((event) => {
     })
 })
 
+function handleDoubleClick(id){
+  console.log(id);
+  $(`#heart-${id}`).fadeIn(1000).fadeOut(1000)
+}
+
 toastr.options = {
     "closeButton": false,
     "debug": false,
