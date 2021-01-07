@@ -20,6 +20,24 @@ const dashboardPage = () => {
     $('#manipulateMe').html(`Welcome to admin dashboard comic app ${localStorage.fullname}`)
     $('span#fullname').html(localStorage.fullname)
     document.body.className = document.body.className.replace("no-javascript", "");
+
+    $.ajax({
+        method: "GET",
+        url: `${baseUrl}/characters`,
+        headers: { "access_token": localStorage.access_token }
+    })
+    .done(response => {
+        response.forEach(res => {
+            $("#chars").append(`<p> ${res.name} </?>
+            <p> ${res.deck} </?>
+            <p> ${res.image.original_url} </?>
+            `);
+        })
+    })
+    .fail(err => {
+        console.log(err);
+    });
+
 }
 
 const myFavoriteComic = () => {
