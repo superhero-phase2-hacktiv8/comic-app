@@ -38,6 +38,18 @@ const myFavoriteCharacter = () => {
     $('#dasboardContent').hide();
     $('#loginPage').hide();
     $('#registerPage').hide();
+
+    $.ajax({
+        method: "GET",
+        url: `${baseUrl}/user/2/characters`,
+        headers: { "access_token": localStorage.access_token }
+    })
+    .done(response => {
+        console.log(response);
+    })
+    .fail(err => {
+        console.log(err);
+    });
 }
 
 const registerPage = () => {
