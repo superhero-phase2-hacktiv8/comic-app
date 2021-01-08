@@ -139,7 +139,7 @@ _Auth Endpoint_
 <br>
 
 _Character Endpoint_
-- `POST /characters`
+- `GET /characters`
 - `POST /characters/search`
 - `POST /characters/add`
 
