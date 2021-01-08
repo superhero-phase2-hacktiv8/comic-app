@@ -30,29 +30,29 @@ class AuthController {
             })
 
         } catch (error) {
-            next(error)
+            return next(error)
         }
     }
 
     static async loginGoogle(req, res, next) {
-        try {
-            const { id_token } = req.body;
-            const client = new OAuth2Client(process.env.GOOGLE_ID_TOKEN);
+        const { id_token } = req.body;
+        const client = new OAuth2Client(process.env.GOOGLE_ID_TOKEN);
+
+        async function verify() {
             const ticket = await client.verifyIdToken({
                 idToken: id_token,
                 audience: process.env.GOOGLE_ID_TOKEN,
             });
-
             const payload = ticket.getPayload();
             const email = payload.email;
             const firstName = payload.given_name;
             const lastName = payload.family_name;
 
-            let checkUser;
-            checkUser = await User.findOne({ where: { email } });
+            let user;
+            user = await User.findOne({ where: { email } });
 
-            if (!checkUser) {
-                checkUser = await User.create({
+            if (!user) {
+                user = await User.create({
                     firstName,
                     lastName,
                     email,
@@ -61,8 +61,8 @@ class AuthController {
             }
 
             const payloadJwt = {
-                id: checkUser.id,
-                email: checkUser.email
+                id: user.id,
+                email: user.email
             }
 
             const access_token = generateToken(payloadJwt);
@@ -70,12 +70,11 @@ class AuthController {
             return res.status(201).json({
                 status: 'success',
                 message: 'login succesfully',
-                fullname: checkUser.fullname(),
+                fullname: user.fullname(),
                 access_token
             })
-        } catch (error) {
-            next(error)
         }
+        verify().catch(err => next(err))
     }
 
     static async register(req, res, next) {
@@ -91,7 +90,7 @@ class AuthController {
                 data
             })
         } catch (error) {
-            next(error)
+            return next(error)
         }
     }
 }

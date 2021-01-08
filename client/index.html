@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="comic app create with love">
     <meta name="author" content="Comic Team">
-    <meta name="google-signin-client_id" content="550351084184-gn3cet4crdb00nmm317qcl5qic0doidv.apps.googleusercontent.com">
+    <meta name="google-signin-client_id" content="631148622730-e47mlm9lgscfhjirdd6m71b6hgg3jfap.apps.googleusercontent.com">
 
     <title>Comic Apps </title>
     <!-- Custom fonts for this template-->
@@ -42,7 +42,7 @@
                 <li class="nav-item">
                     <a class="nav-link" type="button" onclick="dashboardPage()">
                         <i class="fas fa-fw fa-home"></i>
-                        <span>Dashboard</span></a>                        
+                        <span>Dashboard</span></a>
                 </li>
 
                 <!-- Divider -->
@@ -120,40 +120,75 @@
 
                         <!-- TAMBAHKAN PAGE DISINI -->
                         <div id="dasboardContent">
-                            <div class="col-lg-12 mb-4">
-                                <!-- Illustrations -->
-                                <div class="card shadow mb-4">
-                                    <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-primary">Welcome to Dashboard</h6>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row d-flex justify-content-center" id="characters">
-                                            
+                            <div class="row">
+                                <div class="col-lg-6 mb-4">
+                                    <!-- Illustrations -->
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3">
+                                            <h6 class="m-0 font-weight-bold text-primary">Welcome to Dashboard</h6>
                                         </div>
-                                        <!-- <div class="character-container">
-                                            <div class="card" data="1" ondblclick="myFunction(1)">
-                                                <div class="img-container">
-                                                    <div id="heart-1" class="heart"><i class="fas fa-heart"></i></div>
-                                                    <img src="https://img.okezone.com/content/2020/10/17/206/2295251/terlihat-orang-berkostum-superman-di-film-the-batman-vC24hBDNdF.jpg" alt="">
-                                                </div>
-                                                <p>Batman</p>
+                                        <div class="card-body">
+                                            <div class="text-center">
+                                                <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="assets/dashboard.svg" alt="">
                                             </div>
-                                        </div> -->
+                                            <p id="manipulateMe">Welcome to Dashboard Comic Admin</p>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="col-lg-6 mb-4">
+                                    <div class="card shadow mb-4">
+                                        <div class="" id="weather-container">
+
+                                            <div id="header-location">bandung</div>
+                                            <div><img src="http://openweathermap.org/img/w/03d.png" alt="" id="header-icon"></div>
+                                            <div style="font-size: 1.5em;"><span id="header-temp">22</span> &deg;C</div>
+                                            <div id="header-weather">Rain</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            
+
+                            <div class="col-lg-12 mb-4">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">COMIC - Double tab me to become your favorite</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row d-flex justify-content-center" id="characters">
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
-                        
+
 
                         <div id="comicContent">
+                            <h1 class="h3 mb-4 text-gray-800">My Favorite Comic</h1>
                             <div class="col-lg-12 mb-4">
                                 <!-- Illustrations -->
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-primary">Data Comic</h6>
+                                        <a type="button" id="btnCreateComic" class="btn btn-primary"> <i class="fa fa-plus-circle"></i> Add Comic</a>
+                                        <a type="button" onclick="refreshTableComic()" class="btn btn-secondary"> <i class="fa fa-sun"></i> Refresh</a>
                                     </div>
                                     <div class="card-body">
-
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="tableComic" width="100%" cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>name</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -167,7 +202,7 @@
                                         <h6 class="m-0 font-weight-bold text-primary">Data Character</h6>
                                     </div>
                                     <div class="card-body">
-                                        
+
                                     </div>
                                 </div>
                             </div>

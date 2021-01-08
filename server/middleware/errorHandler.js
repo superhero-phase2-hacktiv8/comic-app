@@ -20,6 +20,12 @@ const errorHandler = (err, req, res, next) => {
                 message: validateUnique
             })
             break;
+        case "exists":
+            res.status(400).json({
+                status: 'error',
+                message: 'you already have data'
+            })
+            break;
         case "validateLogin":
             res.status(401).json({
                 status: 'error',
