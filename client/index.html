@@ -120,40 +120,60 @@
 
                         <!-- TAMBAHKAN PAGE DISINI -->
                         <div id="dasboardContent">
-                            <div class="col-lg-12 mb-4">
+                            <div class="col-lg-6 mb-4">
                                 <!-- Illustrations -->
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
                                         <h6 class="m-0 font-weight-bold text-primary">Welcome to Dashboard</h6>
                                     </div>
                                     <div class="card-body">
+                                        <div class="text-center">
+                                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="assets/dashboard.svg" alt="">
+                                        </div>
+                                        <p id="manipulateMe">Welcome to Dashboard Comic Admin</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 mb-4">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">COMIC - Double tab me to become your favorite</h6>
+                                    </div>
+                                    <div class="card-body">
                                         <div class="row d-flex justify-content-center" id="characters">
 
                                         </div>
-                                        <!-- <div class="character-container">
-                                            <div class="card" data="1" ondblclick="myFunction(1)">
-                                                <div class="img-container">
-                                                    <div id="heart-1" class="heart"><i class="fas fa-heart"></i></div>
-                                                    <img src="https://img.okezone.com/content/2020/10/17/206/2295251/terlihat-orang-berkostum-superman-di-film-the-batman-vC24hBDNdF.jpg" alt="">
-                                                </div>
-                                                <p>Batman</p>
-                                            </div>
-                                        </div> -->
                                     </div>
+
                                 </div>
                             </div>
                         </div>
 
 
                         <div id="comicContent">
+                            <h1 class="h3 mb-4 text-gray-800">My Favorite Comic</h1>
                             <div class="col-lg-12 mb-4">
                                 <!-- Illustrations -->
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-primary">Data Comic</h6>
+                                        <a type="button" id="btnCreateComic" class="btn btn-primary"> <i class="fa fa-plus-circle"></i> Add Comic</a>
+                                        <a type="button" onclick="refreshTableComic()" class="btn btn-secondary"> <i class="fa fa-sun"></i> Refresh</a>
                                     </div>
                                     <div class="card-body">
-
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="tableComic" width="100%" cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>name</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

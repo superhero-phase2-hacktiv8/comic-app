@@ -1,5 +1,6 @@
 const { Character } = require('../models');
 const axios = require('axios');
+const { response } = require('express');
 const baseUrl = 'https://comicvine.gamespot.com/api'
 const COMICVINE_API_KEY = process.env.COMICVINE_API_KEY;
 
@@ -11,6 +12,24 @@ class CharController {
             const response = await axios.get(`${baseUrl}/characters/?api_key=${COMICVINE_API_KEY}&format=json&limit=20`);
             res.status(200).json(response.data.results);
         } catch (err) {
+            next(err);
+        }
+    }
+
+    static async getAllCharsFavorite(req, res, next) {
+        try {
+            const data = await Character.findAll({
+                where: { userId: req.user.id },
+                order: [
+                    ['name', 'asc']
+                ]
+            });
+
+            return res.status(200).json({
+                status: 'success',
+                data
+            })
+        } catch (error) {
             next(err);
         }
     }
@@ -28,10 +47,10 @@ class CharController {
         // Cari character favorite user
     static async findCharsByUserId(req, res, next) {
         try {
-            const UserId = +req.params.id;
+            const userId = req.params.id;
             const charIds = await Character.findAll({
                 attributes: ['character_id'],
-                where: { UserId },
+                where: { userId },
                 raw: true
             })
 
@@ -70,6 +89,25 @@ class CharController {
             });
         } catch (err) {
             return next(err);
+        }
+    }
+
+    static async destroyCharFavorite(req, res, next) {
+        try {
+            const char = await Character.findByPk(req.params.id);
+
+            if (!char) {
+                return next({ name: 'notFound' })
+            }
+
+            char.destroy();
+
+            return res.status(200).json({
+                status: 'success',
+                message: 'successfully delete data'
+            })
+        } catch (error) {
+            return next(error)
         }
     }
 }
