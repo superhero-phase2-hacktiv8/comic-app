@@ -25,6 +25,7 @@ class AuthController {
             return res.status(200).json({
                 status: 'success',
                 message: 'successfully login',
+                id: user.id,
                 fullname: user.fullname(),
                 access_token
             })
@@ -70,6 +71,7 @@ class AuthController {
             return res.status(201).json({
                 status: 'success',
                 message: 'login succesfully',
+                id: user.id,
                 fullname: user.fullname(),
                 access_token
             })

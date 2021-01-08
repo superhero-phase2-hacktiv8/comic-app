@@ -1,7 +1,7 @@
 {
     "development": {
         "username": "postgres",
-        "password": "kamu",
+        "password": "sispromasi16",
         "database": "dbcomic",
         "host": "127.0.0.1",
         "dialect": "postgres"
