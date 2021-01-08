@@ -1,5 +1,5 @@
 const baseUrl = 'http://localhost:3000'
-let tableCharacter;
+let tableCharacter, tableComic;
 
 
 $(document).ready(function() {
@@ -8,7 +8,9 @@ $(document).ready(function() {
         $('span#fullname').html(localStorage.fullname)
 
         modalCharacter()
+        modalComic()
         select2character()
+        select2comic()
         dashboardPage()
         showCharacters();
         characterTable()
@@ -57,7 +59,40 @@ const modalCharacter = () => {
                 error: (err) => {
                     if (err.responseJSON.message === 'jwt expired') {
                         toastr.info(`${err.responseJSON.message}`, 'session expired');
-                        $('#modal-todos').modal('hide');
+                        $('#modal-character').modal('hide');
+                        logout()
+                    } else {
+                        toastr.warning(err.responseJSON.message, 'Warning Alert')
+                    }
+                }
+            });
+            return false;
+        }
+    });
+}
+
+const modalComic = () => {
+    $('#modal-comic form').on('submit', (e) => {
+        if (!e.isDefaultPrevented()) {
+            url = `${baseUrl}/comic/add`;
+            method = 'POST';
+            $.ajax({
+                url,
+                method,
+                data: $('#modal-comic form').serialize(),
+                dataType: 'JSON',
+                headers: {
+                    access_token: localStorage.access_token
+                },
+                success: (data) => {
+                    toastr.success('Successfully add new comic!', 'Success Alert', { timeOut: 4000 });
+                    $('#modal-comic').modal('hide');
+                    tableComic.ajax.reload(null, false);
+                },
+                error: (err) => {
+                    if (err.responseJSON.message === 'jwt expired') {
+                        toastr.info(`${err.responseJSON.message}`, 'session expired');
+                        $('#modal-comic').modal('hide');
                         logout()
                     } else {
                         toastr.warning(err.responseJSON.message, 'Warning Alert')
@@ -100,6 +135,37 @@ const select2character = () => {
     });
 }
 
+const select2comic = () => {
+    $('#comic_id').select2({
+        allowClear: true,
+        dropdownParent: $("#modal-comic"),
+        placeholder: 'Pilih Comic',
+        ajax: {
+            url: `${baseUrl}/comic/select2favorite`,
+            dataType: 'json',
+            headers: {
+                access_token: localStorage.getItem('access_token')
+            },
+            data: function(params) {
+                return {
+                    search: params.term
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: data.map(function(item) {
+                        return {
+                            id: item.id,
+                            text: item.title
+                        };
+                    }),
+                }
+            },
+            cache: true
+        }
+    });
+}
+
 const showCharacters = () => {
     $.ajax({
             method: "GET",
@@ -130,27 +196,25 @@ const showCharacters = () => {
         });
 }
 
-const searchCharacter = () => {    
+const searchCharacter = () => {
     const name = $("#search_character_name").val();
     if (!name) {
         showCharacters();
-    } 
-    else {        
-        // console.log(name, '<<<<');
+    } else {
         $.ajax({
-            method: "POST",
-            url: `${baseUrl}/characters/search`,
-            headers: { "access_token": localStorage.access_token },
-            data: {name}
-        })
-        .done(response => {
-            $("#characters").empty();
-            if(response.length === 0) {
-                $("#characters").append(`<p>${name} Not found</p>`);
-                $("#search_character_name").val('');
-            }
-            response.forEach(res => {
-                let char = `
+                method: "POST",
+                url: `${baseUrl}/characters/search`,
+                headers: { "access_token": localStorage.access_token },
+                data: { name }
+            })
+            .done(response => {
+                $("#characters").empty();
+                if (response.length === 0) {
+                    $("#characters").append(`<p>${name} Not found</p>`);
+                    $("#search_character_name").val('');
+                }
+                response.forEach(res => {
+                    let char = `
                 <a data="1" ondblclick="handleDoubleClick(${res.id})">
                     <div class="col-md col-sm-12">
                         <div class="card m-2" style="width: 9.5rem;">
@@ -162,23 +226,23 @@ const searchCharacter = () => {
                         </div>
                     </div>
                 </a>`
-            $("#characters").append(char);
-            $("#search_character_name").val('');
-        })
-    })
-    .fail(err => {
-        console.log(err);
-    });
-}
-    
+                    $("#characters").append(char);
+                    $("#search_character_name").val('');
+                })
+            })
+            .fail(err => {
+                console.log(err);
+            });
+    }
+
 }
 
 $("#form-search").keypress(function(e) {
     if (e.which == 13) {
         searchCharacter();
-        return false;      
+        return false;
     }
-  });
+});
 
 const characterTable = () => {
     tableCharacter = $('#tableCharacter').DataTable({
@@ -221,7 +285,49 @@ const characterTable = () => {
                 orderable: false,
                 searchable: false,
                 render: function(data, type, row) {
-                    return `<div class="input-group-btn"><button class="btn btn-danger" style="margin-left:5px" id="bdestroy"><i class="fa fa-trash"></i> Delete </button>   </div>`
+                    return `<div class="input-group-btn"><button class="btn btn-danger" style="margin-left:5px" id="bDestroyCharacter"><i class="fa fa-trash"></i> Delete </button>   </div>`
+                }
+            },
+        ],
+    });
+}
+
+const comicTable = () => {
+    tableComic = $('#tableComic').DataTable({
+        destroy: true,
+        searchable: true,
+        processing: true,
+        async: false,
+        order: [],
+        language: {
+            "processing": '<div class="spinner-border text-info m-2" role="status"><span class="sr-only"></span></div></br><div>Tunggu Sebentar yaa...</div>',
+        },
+        "drawCallback": function() {
+            $('.dataTables_paginate > .pagination').addClass('pagination-rounded');
+        },
+        ajax: {
+            method: 'GET',
+            url: `${baseUrl}/comic`,
+            headers: {
+                access_token: localStorage.getItem('access_token')
+            },
+            error: (err) => {
+                if (err.responseJSON.message === 'jwt expired') {
+                    toastr.info(`${err.responseJSON.message}`, 'session expired');
+                    logout()
+                }
+            }
+        },
+        columns: [
+            { data: 'id', name: 'id', visible: false, searchable: false },
+            { data: "title" },
+            {
+                data: 'action',
+                name: 'action',
+                orderable: false,
+                searchable: false,
+                render: function(data, type, row) {
+                    return `<div class="input-group-btn"><button class="btn btn-danger" style="margin-left:5px" id="bDestroyComic"><i class="fa fa-trash"></i> Delete </button>   </div>`
                 }
             },
         ],
@@ -232,13 +338,23 @@ const refreshTableCharacter = () => {
     tableCharacter.ajax.reload(null, false);
 }
 
+const refreshTableComic = () => {
+    tableComic.ajax.reload(null, false);
+}
+
 $('#btnCreateCharacter').click(function() {
     $('#modal-character').modal();
     $('#modal-character form')[0].reset();
+    $('.modal-title').text('Add new character');
+});
+
+$('#btnCreateComic').click(function() {
+    $('#modal-comic').modal();
+    $('#modal-comic form')[0].reset();
     $('.modal-title').text('Add new comic');
 });
 
-$('#tableCharacter tbody').on('click', '#bdestroy', function() {
+$('#tableCharacter tbody').on('click', '#bDestroyCharacter', function() {
     const id = tableCharacter.row($(this).parents('tr')).data().id;
 
     Swal.fire({
@@ -258,7 +374,7 @@ $('#tableCharacter tbody').on('click', '#bdestroy', function() {
                     access_token: localStorage.access_token
                 },
                 success: (data) => {
-                    Swal.fire("Done!", "Data Berhasil di hapus!", "success");
+                    Swal.fire("Done!", "Successfully deleted data!", "success");
                     toastr.success(data.message, 'Success Alert')
                     refreshTableCharacter()
                 },
@@ -275,8 +391,45 @@ $('#tableCharacter tbody').on('click', '#bdestroy', function() {
     })
 });
 
+$('#tableComic tbody').on('click', '#bDestroyComic', function() {
+    const id = tableComic.row($(this).parents('tr')).data().id;
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                type: "DELETE",
+                url: `${baseUrl}/comic/${id}`,
+                headers: {
+                    access_token: localStorage.access_token
+                },
+                success: (data) => {
+                    Swal.fire("Done!", "Successfully deleted data!", "success");
+                    toastr.success(data.message, 'Success Alert')
+                    refreshTableComic()
+                },
+                error: (err) => {
+                    if (err.responseJSON.message === 'jwt expired') {
+                        toastr.info(`${err.responseJSON.message}`, 'session expired');
+                        logout()
+                    }
+                    Swal.fire("Error deleting!", "Please try again", "error");
+                    toastr.error(err.message, 'Error Alert')
+                }
+            });
+        }
+    })
+});
+
 const myFavoriteComic = () => {
-    characterTable()
+    comicTable()
     $('#dashboardPage').show();
     $('#comicContent').show();
     $('#characterContent').hide();
@@ -286,6 +439,7 @@ const myFavoriteComic = () => {
 }
 
 const myFavoriteCharacter = () => {
+    characterTable()
     $('#dashboardPage').show();
     $('#characterContent').show();
     $('#comicContent').hide();

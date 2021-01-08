@@ -9,7 +9,7 @@ class ComicController {
                     userId: req.user.id
                 }
             })
-            console.log(data);
+
             return res.status(200).json({ status: 'success', data })
         } catch (error) {
             return next(error)
