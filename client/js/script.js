@@ -26,14 +26,14 @@ const dashboardPage = () => {
 
 const showCharacters = () => {
     $.ajax({
-        method: "GET",
-        url: `${baseUrl}/characters`,
-        headers: { "access_token": localStorage.access_token }
-    })
-    .done(response => {
-        $("#characters").empty();
-        response.forEach(res => {
-            let char = `
+            method: "GET",
+            url: `${baseUrl}/characters`,
+            headers: { "access_token": localStorage.access_token }
+        })
+        .done(response => {
+            $("#characters").empty();
+            response.forEach(res => {
+                let char = `
             <a data="1" ondblclick="handleDoubleClick(${res.id})">
                 <div class="col-md col-sm-12">
                     <div class="card m-2" style="width: 9.5rem;">
@@ -46,12 +46,12 @@ const showCharacters = () => {
                 </div>
             </a>
             `
-            $("#characters").append(char);
+                $("#characters").append(char);
+            })
         })
-    })
-    .fail(err => {
-        console.log(err);
-    });
+        .fail(err => {
+            console.log(err);
+        });
 }
 
 const myFavoriteComic = () => {
@@ -72,16 +72,16 @@ const myFavoriteCharacter = () => {
     $('#registerPage').hide();
 
     $.ajax({
-        method: "GET",
-        url: `${baseUrl}/user/2/characters`,
-        headers: { "access_token": localStorage.access_token }
-    })
-    .done(response => {
-        console.log(response);
-    })
-    .fail(err => {
-        console.log(err);
-    });
+            method: "GET",
+            url: `${baseUrl}/user/2/characters`,
+            headers: { "access_token": localStorage.access_token }
+        })
+        .done(response => {
+            console.log(response);
+        })
+        .fail(err => {
+            console.log(err);
+        });
 }
 
 const registerPage = () => {
@@ -206,21 +206,21 @@ $('#btnRegister').click((event) => {
     })
 })
 
-function handleDoubleClick(id){
-  console.log(id);
-  $(`#heart-${id}`).fadeIn(1000).fadeOut(1000)
-  $.ajax({
-    method: "POST",
-    url: `${baseUrl}/characters/add`,
-    headers: { "access_token": localStorage.access_token },
-    data: {character_id: id},
-    success: (data) => {
-        console.log(data);
-    },
-    error: (err) => {
-        console.log(err);
-    }    
-})
+function handleDoubleClick(id) {
+    console.log(id);
+    $(`#heart-${id}`).fadeIn(1000).fadeOut(1000)
+    $.ajax({
+        method: "POST",
+        url: `${baseUrl}/characters/add`,
+        headers: { "access_token": localStorage.access_token },
+        data: { character_id: id },
+        success: (data) => {
+            toastr.success(data.message, 'Success Alert')
+        },
+        error: (err) => {
+            toastr.warning(err.responseJSON.message, 'Warning Alert')
+        }
+    })
 }
 
 toastr.options = {
