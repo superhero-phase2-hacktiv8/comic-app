@@ -140,13 +140,17 @@ _Auth Endpoint_
 
 _Character Endpoint_
 - `GET /characters`
-- `POST /characters/search`
+- `GET /characters/select2character`
+- `GET /characters/favorite`
 - `POST /characters/add`
+- `POST /characters/search/:name`
+- `DELETE /characters/search/:name`
 
 **Get all character**
 ----
 
 * **URL**
+
 
   /characters
 
@@ -195,7 +199,7 @@ _Character Endpoint_
 
 * **URL**
 
-  /characters/search
+  /characters/search/:name
 
 * **Method**
 
@@ -236,16 +240,61 @@ _Character Endpoint_
     "message": <error_message>
   }
   ```
- **Add character to favorite**
+  **Add favorite comic**
 ----
 
 * **URL**
 
-  /characters/favorite
+  /characters/add
 
 * **Method**
 
   `POST`
+
+* **Request Headers**
+
+  ```
+  {
+    access_token : <your access_token>,
+    user_id : <your user_id>
+  }
+  ```
+
+* **Request Body**
+
+  ```
+  not needed
+  ```
+
+* **Success Response:** <br />
+  **Code:** 200 <br />
+  **Content:**
+  ```
+  [
+    {message : "success add comic to your favorite"}
+  ]
+  ```
+
+* **Failed Response:** <br />
+  **Code:** 500 <br />
+  **Content:**
+  ```
+  {
+    "status": "error",
+    "message": <error_message>
+  }
+  ```
+
+**remove favorite comic**
+----
+
+* **URL**
+
+  /characters/:id
+
+* **Method**
+
+  `DELETE`
 
 * **Request Headers**
 
@@ -258,22 +307,199 @@ _Character Endpoint_
 * **Request Body**
 
   ```
-  {
-    character_id : <character_id>
-  }
+  not needed
   ```
+
 * **Success Response:** <br />
-  **Code:** 201 <br />
+  **Code:** 200 <br />
+  **Content:**
+  ```
+  [
+    {message : "success remove comic from your favorite"}
+  ]
+  ```
+
+* **Failed Response:** <br />
+  **Code:** 500 <br />
   **Content:**
   ```
   {
-    "status": "success",
-    "message": "succesfully add new favorite character",
-    "data": {<object cheracther data>}, // name, id, imgUrl, etc.
-            {<object cheracther data>},
-            ...
-            {<object cheracther data>}
+    "status": "error",
+    "message": <error_message>
   }
+  ```
+<br>
+
+_Comic Endpoint_
+- `GET /comic`
+- `GET /comic/:id`
+- `POST /comic`
+- `DELETE /comic/:id`
+
+**Get all comic**
+----
+
+* **URL**
+
+  /comics
+
+* **Method**
+
+  `GET`
+
+* **Request Headers**
+
+  ```
+  {
+    access_token : <your access_token>
+  }
+  ```
+
+* **Request Body**
+
+  ```
+  not needed
+  ```
+
+* **Success Response:** <br />
+  **Code:** 200 <br />
+  **Content:**
+  ```
+  [
+    {<object comic data>}, // title
+  ]
+  ```
+
+* **Failed Response:** <br />
+  **Code:** 500 <br />
+  **Content:**
+  ```
+  {
+    "status": "error",
+    "message": <error_message>
+  }
+  ```
+**Search comic by name**
+----
+
+* **URL**
+
+  /comics/:id
+
+* **Method**
+
+  `GET`
+
+* **Request Headers**
+
+  ```
+  {
+    access_token : <your access_token>
+  }
+  ```
+
+* **Request Body**
+
+  ```
+  not needed
+  ```
+
+* **Success Response:** <br />
+  **Code:** 200 <br />
+  **Content:**
+  ```
+  [
+    {<object cheracther data>}, // title
+  ]
+  ```
+
+* **Failed Response:** <br />
+  **Code:** 500 <br />
+  **Content:**
+  ```
+  {
+    "status": "error",
+    "message": <error_message>
+  }
+  ```
+
+**Add favorite comic**
+----
+
+* **URL**
+
+  /comics
+
+* **Method**
+
+  `POST`
+
+* **Request Headers**
+
+  ```
+  {
+    access_token : <your access_token>,
+    user_id : <your user_id>
+  }
+  ```
+
+* **Request Body**
+
+  ```
+  not needed
+  ```
+
+* **Success Response:** <br />
+  **Code:** 200 <br />
+  **Content:**
+  ```
+  [
+    {message : "success add comic to your favorite"}
+  ]
+  ```
+
+* **Failed Response:** <br />
+  **Code:** 500 <br />
+  **Content:**
+  ```
+  {
+    "status": "error",
+    "message": <error_message>
+  }
+  ```
+
+**remove favorite comic**
+----
+
+* **URL**
+
+  /comics
+
+* **Method**
+
+  `DELETE`
+
+* **Request Headers**
+
+  ```
+  {
+    access_token : <your access_token>
+  }
+  ```
+
+* **Request Body**
+
+  ```
+  not needed
+  ```
+
+* **Success Response:** <br />
+  **Code:** 200 <br />
+  **Content:**
+  ```
+  [
+    {message : "success remove comic from your favorite"}
+  ]
   ```
 
 * **Failed Response:** <br />
