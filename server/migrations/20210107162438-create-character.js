@@ -8,13 +8,24 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      UserId: {
+      userId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Users',
           key: 'id'
-       }
+       },
+       onDelete: 'CASCADE',
+       onUpdate: 'CASCADE'
       },
+      name: {
+        type: Sequelize.STRING
+      },
+      deck: {
+       type: Sequelize.TEXT
+      },
+      imgUrl: {
+       type: Sequelize.STRING
+       }
       character_id: {
         type: Sequelize.INTEGER
       },

@@ -3,5 +3,7 @@ const CharController = require('../controllers/charController.js');
 
 router.get('/', CharController.getAllChars);
 router.get('/search/:name', CharController.findCharsByName);
+router.post('/add', CharController.addCharFavorite);
+
 
 module.exports = router;

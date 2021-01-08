@@ -4,6 +4,7 @@ $(document).ready(function() {
     if (localStorage.access_token) {
         $('span#fullname').html(localStorage.fullname)
         dashboardPage()
+        showCharacters();
     } else {
         loginPage()
     }
@@ -20,6 +21,37 @@ const dashboardPage = () => {
     $('#manipulateMe').html(`Welcome to admin dashboard comic app ${localStorage.fullname}`)
     $('span#fullname').html(localStorage.fullname)
     document.body.className = document.body.className.replace("no-javascript", "");
+    showCharacters();
+}
+
+const showCharacters = () => {
+    $.ajax({
+        method: "GET",
+        url: `${baseUrl}/characters`,
+        headers: { "access_token": localStorage.access_token }
+    })
+    .done(response => {
+        $("#characters").empty();
+        response.forEach(res => {
+            let char = `
+            <a data="1" ondblclick="handleDoubleClick(${res.id})">
+                <div class="col-md col-sm-12">
+                    <div class="card m-2" style="width: 9.5rem;">
+                        <div class="img-container">
+                            <div id="heart-${res.id}" class="heart"><i class="fas fa-heart"></i></div>
+                            <img src="${res.image.original_url}" alt="">
+                        </div>
+                        <p class="text-center">${res.name}</p>
+                    </div>
+                </div>
+            </a>
+            `
+            $("#characters").append(char);
+        })
+    })
+    .fail(err => {
+        console.log(err);
+    });
 }
 
 const myFavoriteComic = () => {
@@ -177,6 +209,18 @@ $('#btnRegister').click((event) => {
 function handleDoubleClick(id){
   console.log(id);
   $(`#heart-${id}`).fadeIn(1000).fadeOut(1000)
+  $.ajax({
+    method: "POST",
+    url: `${baseUrl}/characters/add`,
+    headers: { "access_token": localStorage.access_token },
+    data: {character_id: id},
+    success: (data) => {
+        console.log(data);
+    },
+    error: (err) => {
+        console.log(err);
+    }    
+})
 }
 
 toastr.options = {
