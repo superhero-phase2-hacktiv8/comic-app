@@ -68,13 +68,10 @@ $(document).ready(function() {
         });
         dashboardPage()
         showCharacters();
-<<<<<<< HEAD
         characterTable()
-=======
         comicTable()
         getLocation()
         getWeather()
->>>>>>> 680436c8025e8a8bf13d403cb5856c3a00699f49
     } else {
         loginPage()
     }
@@ -380,35 +377,35 @@ function handleDoubleClick(id) {
 }
 
 function getLocation() {
-  navigator.geolocation.getCurrentPosition(foundLocation);
-  
-  function foundLocation(position) {
-    const lat = position.coords.latitude;
-    const lon = position.coords.longitude;
-    localStorage.lat = lat
-    localStorage.lon = lon
-  }
+    navigator.geolocation.getCurrentPosition(foundLocation);
+
+    function foundLocation(position) {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        localStorage.lat = lat
+        localStorage.lon = lon
+    }
 }
 
-function getWeather(){
-  const {lat,lon} = localStorage
-  const latitude = lat || -6.2146
-  const longitude = lon || 106.8451
-  $.ajax({
-    method: 'GET',
-    url: `${baseUrl}/weather/${latitude}/${longitude}`,
-    headers: {
-      access_token: localStorage.access_token
-    }
-  })
-  .done(response=>{
-    console.log(response);
-    $('#header-location').text(response.name)
-    $('#header-temp').text(Math.floor(response.main.temp))
-    $('#header-icon').attr('src',`http://openweathermap.org/img/w/${response.weather[0].icon}.png`)
-    $('#header-weather').text(response.weather[0].main)
-  })
-  .fail(err=>console.log(err))
+function getWeather() {
+    const { lat, lon } = localStorage
+    const latitude = lat || -6.2146
+    const longitude = lon || 106.8451
+    $.ajax({
+            method: 'GET',
+            url: `${baseUrl}/weather/${latitude}/${longitude}`,
+            headers: {
+                access_token: localStorage.access_token
+            }
+        })
+        .done(response => {
+            console.log(response);
+            $('#header-location').text(response.name)
+            $('#header-temp').text(Math.floor(response.main.temp))
+            $('#header-icon').attr('src', `http://openweathermap.org/img/w/${response.weather[0].icon}.png`)
+            $('#header-weather').text(response.weather[0].main)
+        })
+        .fail(err => console.log(err))
 }
 
 toastr.options = {
