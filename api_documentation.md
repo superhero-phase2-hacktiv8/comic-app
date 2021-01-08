@@ -139,8 +139,9 @@ _Auth Endpoint_
 <br>
 
 _Character Endpoint_
-- `POST /characters`
-- `POST /characters/search/:name`
+- `GET /characters`
+- `POST /characters/search`
+- `POST /characters/add`
 
 **Get all character**
 ----
@@ -194,7 +195,7 @@ _Character Endpoint_
 
 * **URL**
 
-  /characters/search/:name
+  /characters/search
 
 * **Method**
 
@@ -224,6 +225,55 @@ _Character Endpoint_
     ...
     {<object cheracther data>}
   ]
+  ```
+
+* **Failed Response:** <br />
+  **Code:** 500 <br />
+  **Content:**
+  ```
+  {
+    "status": "error",
+    "message": <error_message>
+  }
+  ```
+ **Add character to favorite**
+----
+
+* **URL**
+
+  /characters/favorite
+
+* **Method**
+
+  `POST`
+
+* **Request Headers**
+
+  ```
+  {
+    access_token : <your access_token>
+  }
+  ```
+
+* **Request Body**
+
+  ```
+  {
+    character_id : <character_id>
+  }
+  ```
+* **Success Response:** <br />
+  **Code:** 201 <br />
+  **Content:**
+  ```
+  {
+    "status": "success",
+    "message": "succesfully add new favorite character",
+    "data": {<object cheracther data>}, // name, id, imgUrl, etc.
+            {<object cheracther data>},
+            ...
+            {<object cheracther data>}
+  }
   ```
 
 * **Failed Response:** <br />
