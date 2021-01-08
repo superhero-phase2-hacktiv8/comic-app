@@ -157,18 +157,18 @@
                                         <h6 class="m-0 font-weight-bold text-primary">COMIC - Double tab me to become your favorite</h6>
                                     </div>
                                     <div class="" style="width: 20%; ">
-                                        <div class="d-flex">                                            
-                                        <form id="form-search" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                                            <div class="input-group">
-                                                <input id="search_character_name" type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-primary" type="button" id="search_character" onclick="searchCharacter()">
+                                        <div class="d-flex">
+                                            <form id="form-search" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                                                <div class="input-group">
+                                                    <input id="search_character_name" type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-primary" type="button" id="search_character" onclick="searchCharacter()">
                                                         <i class="fas fa-search fa-sm"></i>
                                                     </button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </form>
-                                     </div>
+                                            </form>
+                                        </div>
                                     </div>
                                     <div class="card-body">
                                         <div class="row d-flex justify-content-center" id="characters">
@@ -210,19 +210,35 @@
                             </div>
                         </div>
 
+                        <!-- COMIC CONTENT -->
                         <div id="comicContent">
+                            <h1 class="h3 mb-4 text-gray-800">My Favorite COMIC</h1>
                             <div class="col-lg-12 mb-4">
                                 <!-- Illustrations -->
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-primary">Data Comic</h6>
+                                        <a type="button" id="btnCreateComic" class="btn btn-primary"> <i class="fa fa-plus-circle"></i> Add Comic</a>
+                                        <a type="button" onclick="refreshTableComic()" class="btn btn-secondary"> <i class="fa fa-sun"></i> Refresh</a>
                                     </div>
                                     <div class="card-body">
-
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="tableComic" width="100%" cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>title</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- END COMIC CONTENT -->
 
                         <!-- END PAGE -->
 
@@ -263,7 +279,6 @@
                                 <label for="character_id" class="col-md-5 control-label">Comic</label>
                                 <div class="col-md-12">
                                     <select id="character_id" name="character_id" style="width: 100% "></select>
-                                    <!-- <input type="text" id="description" class="form-control" placeholder="description" name="description" autofocus> -->
                                     <span class="help-block with-errors"></span>
                                 </div>
                             </div>
@@ -280,6 +295,37 @@
             </div>
         </div>
         <!-- END MODAL CHARACTER -->
+
+        <!-- Modal Comic -->
+        <div class="modal fade" id="modal-comic" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form>
+                        <div class="modal-header">
+                            <h4 class="modal-title"></h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true"> &times;</span> </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="comic_id" class="col-md-5 control-label">Comic</label>
+                                <div class="col-md-12">
+                                    <select id="comic_id" name="comic_id" style="width: 100% "></select>
+                                    <span class="help-block with-errors"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">
+                            <span class='glyphicon glyphicon-check'></span> Simpan</button>
+                            <button type="button" class="btn btn-warning" data-dismiss="modal">
+                            <span class='glyphicon glyphicon-remove'></span> Batal
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- END MODAL COMIC -->
 
         <a class="scroll-to-top rounded" href="#page-top">
             <i class="fas fa-angle-up"></i>
