@@ -130,6 +130,56 @@ const showCharacters = () => {
         });
 }
 
+const searchCharacter = () => {    
+    const name = $("#search_character_name").val();
+    if (!name) {
+        showCharacters();
+    } 
+    else {        
+        // console.log(name, '<<<<');
+        $.ajax({
+            method: "POST",
+            url: `${baseUrl}/characters/search`,
+            headers: { "access_token": localStorage.access_token },
+            data: {name}
+        })
+        .done(response => {
+            $("#characters").empty();
+            if(response.length === 0) {
+                $("#characters").append(`<p>${name} Not found</p>`);
+                $("#search_character_name").val('');
+            }
+            response.forEach(res => {
+                let char = `
+                <a data="1" ondblclick="handleDoubleClick(${res.id})">
+                    <div class="col-md col-sm-12">
+                        <div class="card m-2" style="width: 9.5rem;">
+                            <div class="img-container">
+                                <div id="heart-${res.id}" class="heart"><i class="fas fa-heart"></i></div>
+                                <img src="${res.image.original_url}" alt="">
+                            </div>
+                            <p class="text-center">${res.name}</p>
+                        </div>
+                    </div>
+                </a>`
+            $("#characters").append(char);
+            $("#search_character_name").val('');
+        })
+    })
+    .fail(err => {
+        console.log(err);
+    });
+}
+    
+}
+
+$("#form-search").keypress(function(e) {
+    if (e.which == 13) {
+        searchCharacter();
+        return false;      
+    }
+  });
+
 const characterTable = () => {
     tableCharacter = $('#tableCharacter').DataTable({
         destroy: true,

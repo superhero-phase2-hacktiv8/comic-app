@@ -57,7 +57,7 @@ class CharController {
     // Cari character berdasarkan nama, ambil nama dari req params name
     static async findCharsByName(req, res, next) {
         try {
-            const name = req.params.name;
+            const { name } = req.body;
             const response = await axios.get(`${baseUrl}/characters/?api_key=${COMICVINE_API_KEY}&format=json&filter=name:${name}`);
             return res.status(200).json(response.data.results);
         } catch (err) {
