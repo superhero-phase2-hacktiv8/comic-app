@@ -26,6 +26,12 @@ const errorHandler = (err, req, res, next) => {
                 message: 'you already have data'
             })
             break;
+        case "selectCharacter":
+            res.status(400).json({
+                status: 'error',
+                message: 'character field is required'
+            })
+            break
         case "validateLogin":
             res.status(401).json({
                 status: 'error',

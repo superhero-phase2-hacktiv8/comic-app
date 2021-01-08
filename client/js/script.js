@@ -1,13 +1,74 @@
 const baseUrl = 'http://localhost:3000'
-let tableComic;
+let tableCharacter;
+
 
 $(document).ready(function() {
     if (localStorage.access_token) {
-        $('#manipulateMe').html(`Welcome to admin dashboard comic app ${localStorage.fullname}`)
+        $('#manipulateMe').html(`Welcome to admin dashboard comic & superhero app ${localStorage.fullname}`)
         $('span#fullname').html(localStorage.fullname)
+
+        $('.js-example-basic-single').select2({
+            allowClear: true,
+            dropdownParent: $("#modal-character"),
+            placeholder: 'Pilih Charachter',
+            ajax: {
+                url: `${baseUrl}/characters/select2character`,
+                dataType: 'json',
+                headers: {
+                    access_token: localStorage.getItem('access_token')
+                },
+                data: function(params) {
+                    return {
+                        search: params.term
+                    }
+                },
+                processResults: function(data) {
+                    return {
+                        results: data.map(function(item) {
+                            return {
+                                id: item.id,
+                                text: item.name
+                            };
+                        }),
+                    }
+                },
+                cache: true
+            }
+        });
+
+        $('#modal-character form').on('submit', (e) => {
+            if (!e.isDefaultPrevented()) {
+                url = `${baseUrl}/characters/add`;
+                method = 'POST';
+                $.ajax({
+                    url,
+                    method,
+                    data: $('#modal-character form').serialize(),
+                    dataType: 'JSON',
+                    headers: {
+                        access_token: localStorage.access_token
+                    },
+                    success: (data) => {
+                        toastr.success('Successfully add new character!', 'Success Alert', { timeOut: 4000 });
+                        $('#modal-character').modal('hide');
+                        tableCharacter.ajax.reload(null, false);
+                    },
+                    error: (err) => {
+                        if (err.responseJSON.message === 'jwt expired') {
+                            toastr.info(`${err.responseJSON.message}`, 'session expired');
+                            $('#modal-todos').modal('hide');
+                            logout()
+                        } else {
+                            toastr.warning(err.responseJSON.message, 'Warning Alert')
+                        }
+                    }
+                });
+                return false;
+            }
+        });
         dashboardPage()
         showCharacters();
-        comicTable()
+        characterTable()
     } else {
         loginPage()
     }
@@ -21,7 +82,7 @@ const dashboardPage = () => {
     $('#characterContent').hide();
     $('#loginPage').hide();
     $('#registerPage').hide();
-    $('#manipulateMe').html(`Welcome to admin dashboard comic app ${localStorage.fullname}`)
+    $('#manipulateMe').html(`Welcome to admin dashboard comic and superhero app ${localStorage.fullname}`)
     $('span#fullname').html(localStorage.fullname)
     document.body.className = document.body.className.replace("no-javascript", "");
     showCharacters();
@@ -57,8 +118,8 @@ const showCharacters = () => {
         });
 }
 
-const comicTable = () => {
-    tableComic = $('#tableComic').DataTable({
+const characterTable = () => {
+    tableCharacter = $('#tableCharacter').DataTable({
         destroy: true,
         searchable: true,
         processing: true,
@@ -85,6 +146,12 @@ const comicTable = () => {
         },
         columns: [
             { data: 'id', name: 'id', visible: false, searchable: false },
+            {
+                data: 'imgUrl',
+                render: (data) => {
+                    return `<img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 10rem;" src="${data}" alt="">`
+                }
+            },
             { data: "name" },
             {
                 data: 'action',
@@ -99,12 +166,18 @@ const comicTable = () => {
     });
 }
 
-const refreshTableComic = () => {
-    tableComic.ajax.reload(null, false);
+const refreshTableCharacter = () => {
+    tableCharacter.ajax.reload(null, false);
 }
 
-$('#tableComic tbody').on('click', '#bdestroy', function() {
-    const id = tableComic.row($(this).parents('tr')).data().id;
+$('#btnCreateCharacter').click(function() {
+    $('#modal-character').modal();
+    $('#modal-character form')[0].reset();
+    $('.modal-title').text('Add new comic');
+});
+
+$('#tableCharacter tbody').on('click', '#bdestroy', function() {
+    const id = tableCharacter.row($(this).parents('tr')).data().id;
 
     Swal.fire({
         title: 'Are you sure?',
@@ -125,7 +198,7 @@ $('#tableComic tbody').on('click', '#bdestroy', function() {
                 success: (data) => {
                     Swal.fire("Done!", "Data Berhasil di hapus!", "success");
                     toastr.success(data.message, 'Success Alert')
-                    tableComic.ajax.reload()
+                    refreshTableCharacter()
                 },
                 error: (err) => {
                     if (err.responseJSON.message === 'jwt expired') {
@@ -141,7 +214,7 @@ $('#tableComic tbody').on('click', '#bdestroy', function() {
 });
 
 const myFavoriteComic = () => {
-    comicTable()
+    characterTable()
     $('#dashboardPage').show();
     $('#comicContent').show();
     $('#characterContent').hide();
@@ -157,18 +230,6 @@ const myFavoriteCharacter = () => {
     $('#dasboardContent').hide();
     $('#loginPage').hide();
     $('#registerPage').hide();
-
-    $.ajax({
-            method: "GET",
-            url: `${baseUrl}/user/2/characters`,
-            headers: { "access_token": localStorage.access_token }
-        })
-        .done(response => {
-            console.log(response);
-        })
-        .fail(err => {
-            console.log(err);
-        });
 }
 
 const registerPage = () => {

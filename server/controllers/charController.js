@@ -16,6 +16,26 @@ class CharController {
         }
     }
 
+    static async select2Character(req, res, next) {
+        try {
+            const response = await axios.get(`${baseUrl}/characters/?api_key=${COMICVINE_API_KEY}&format=json&limit=20`);
+
+            const newData = response.data.results.map(el => {
+                return {
+                    id: el.id,
+                    name: el.name
+                }
+            })
+
+            const filter = newData.filter(item => item.name.includes(req.query.search))
+
+
+            res.status(200).json(filter);
+        } catch (err) {
+            next(err);
+        }
+    }
+
     static async getAllCharsFavorite(req, res, next) {
         try {
             const data = await Character.findAll({
@@ -36,15 +56,16 @@ class CharController {
 
     // Cari character berdasarkan nama, ambil nama dari req params name
     static async findCharsByName(req, res, next) {
-            try {
-                const name = req.params.name;
-                const response = await axios.get(`${baseUrl}/characters/?api_key=${COMICVINE_API_KEY}&format=json&filter=name:${name}`);
-                return res.status(200).json(response.data.results);
-            } catch (err) {
-                return next(err);
-            }
+        try {
+            const name = req.params.name;
+            const response = await axios.get(`${baseUrl}/characters/?api_key=${COMICVINE_API_KEY}&format=json&filter=name:${name}`);
+            return res.status(200).json(response.data.results);
+        } catch (err) {
+            return next(err);
         }
-        // Cari character favorite user
+    }
+
+    // Cari character favorite user
     static async findCharsByUserId(req, res, next) {
         try {
             const userId = req.params.id;
@@ -67,6 +88,11 @@ class CharController {
     static async addCharFavorite(req, res, next) {
         try {
             const { character_id } = req.body;
+
+            if (!character_id) {
+                return next({ name: 'selectCharacter' })
+            }
+
             const response = await axios.get(`${baseUrl}/characters/?api_key=${COMICVINE_API_KEY}&format=json&filter=id:${character_id}`);
             const name = response.data.results[0].name;
             const deck = response.data.results[0].deck;
