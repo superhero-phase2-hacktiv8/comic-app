@@ -335,4 +335,48 @@ _Character Endpoint_
     "message": <error_message>
   }
   ```
+  **Delete favorite character**
+----
+
+* **URL**
+
+  /characters/:id
+
+* **Method**
+
+  `DELETE`
+
+* **Request Headers**
+
+  ```
+  {
+    access_token : <your access_token>
+  }
+  ```
+
+* **Request Body**
+
+  ```
+  not needed
+  ```
+* **Success Response:** <br />
+  **Code:** 200 <br />
+  **Content:**
+  ```
+  {
+    "status": "success",
+    "message": "successfully delete data",
+   
+  }
+  ```
+
+* **Failed Response:** <br />
+  **Code:** 500 <br />
+  **Content:**
+  ```
+  {
+    "status": "error",
+    "message": <error_message>
+  }
+  ```
 
