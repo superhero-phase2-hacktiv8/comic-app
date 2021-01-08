@@ -238,7 +238,7 @@ _Character Endpoint_
     "message": <error_message>
   }
   ```
- **Add character to favorite**
+**Add character to favorite**
 ----
 
 * **URL**
