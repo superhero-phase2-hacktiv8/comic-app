@@ -235,3 +235,146 @@ _Character Endpoint_
     "message": <error_message>
   }
   ```
+<br>
+
+_Comic Endpoint_
+- `GET /marvel`
+- `GET /marvel/:id`
+- `POST /marvel`
+- `DELETE /marvel/:id`
+
+**Get all comic**
+----
+
+* **URL**
+
+  /characters
+
+* **Method**
+
+  `GET`
+
+* **Request Headers**
+
+  ```
+  {
+    access_token : <your access_token>
+  }
+  ```
+
+* **Request Body**
+
+  ```
+  not needed
+  ```
+
+* **Success Response:** <br />
+  **Code:** 200 <br />
+  **Content:**
+  ```
+  [
+    {<object comic data>}, // id, title, description
+    {<object comic data>},
+    ...
+    {<object comic data>}
+  ]
+  ```
+
+* **Failed Response:** <br />
+  **Code:** 500 <br />
+  **Content:**
+  ```
+  {
+    "status": "error",
+    "message": <error_message>
+  }
+  ```
+
+**Add favorite comic**
+----
+
+* **URL**
+
+  /marvel
+
+* **Method**
+
+  `POST`
+
+* **Request Headers**
+
+  ```
+  {
+    access_token : <your access_token>,
+    user_id : <your user_id>
+  }
+  ```
+
+* **Request Body**
+
+  ```
+  not needed
+  ```
+
+* **Success Response:** <br />
+  **Code:** 200 <br />
+  **Content:**
+  ```
+  [
+    {message : "success add comic to your favorite"}
+  ]
+  ```
+
+* **Failed Response:** <br />
+  **Code:** 500 <br />
+  **Content:**
+  ```
+  {
+    "status": "error",
+    "message": <error_message>
+  }
+  ```
+
+**remove favorite comic**
+----
+
+* **URL**
+
+  /characters
+
+* **Method**
+
+  `DELETE`
+
+* **Request Headers**
+
+  ```
+  {
+    access_token : <your access_token>
+  }
+  ```
+
+* **Request Body**
+
+  ```
+  not needed
+  ```
+
+* **Success Response:** <br />
+  **Code:** 200 <br />
+  **Content:**
+  ```
+  [
+    {message : "success remove comic from your favorite"}
+  ]
+  ```
+
+* **Failed Response:** <br />
+  **Code:** 500 <br />
+  **Content:**
+  ```
+  {
+    "status": "error",
+    "message": <error_message>
+  }
+  ```
