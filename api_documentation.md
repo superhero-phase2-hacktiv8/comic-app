@@ -241,7 +241,7 @@ _Character Endpoint_
 
 * **URL**
 
-  /characters/favorite
+  /characters/add
 
 * **Method**
 
