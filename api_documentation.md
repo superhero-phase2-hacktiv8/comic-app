@@ -287,7 +287,7 @@ _Character Endpoint_
     "message": <error_message>
   }
   ```
-  **GET all favorite characters**
+**GET all favorite characters**
 ----
 
 * **URL**
@@ -335,7 +335,7 @@ _Character Endpoint_
     "message": <error_message>
   }
   ```
-  **Delete favorite character**
+**Delete favorite character**
 ----
 
 * **URL**
