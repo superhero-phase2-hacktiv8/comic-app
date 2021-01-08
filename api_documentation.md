@@ -142,6 +142,7 @@ _Character Endpoint_
 - `GET /characters`
 - `POST /characters/search`
 - `POST /characters/add`
+- `GET /characters/favorite`
 
 **Get all character**
 ----
@@ -285,3 +286,52 @@ _Character Endpoint_
     "message": <error_message>
   }
   ```
+  **GET all favorite characters**
+----
+
+* **URL**
+
+  /characters/favorite
+
+* **Method**
+
+  `GET`
+
+* **Request Headers**
+
+  ```
+  {
+    access_token : <your access_token>
+  }
+  ```
+
+* **Request Body**
+
+  ```
+  not needed
+  ```
+* **Success Response:** <br />
+  **Code:** 200 <br />
+  **Content:**
+  ```
+  {
+    "status": "success",
+    [
+      "data": {<object cheracther data>}, // name, id, imgUrl, etc.
+              {<object cheracther data>},
+              ...
+              {<object cheracther data>}
+    ]
+  }
+  ```
+
+* **Failed Response:** <br />
+  **Code:** 500 <br />
+  **Content:**
+  ```
+  {
+    "status": "error",
+    "message": <error_message>
+  }
+  ```
+
