@@ -5,6 +5,7 @@ const isLogin = require('../middleware/isLogin')
 const comicsRouter = require('../routes/comics.js');
 const charsRouter = require('../routes/char.js');
 const userRouter = require('../routes/user.js');
+const weatherRouter = require('../routes/weather')
 
 
 
@@ -16,6 +17,7 @@ router.get('/', (req, res) => {
 router.use('/comics', comicsRouter);
 router.use('/characters', charsRouter);
 router.use('/user', userRouter);
+router.use('/weather', weatherRouter)
 
 
 module.exports = router;

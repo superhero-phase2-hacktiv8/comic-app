@@ -8,6 +8,8 @@ $(document).ready(function() {
         dashboardPage()
         showCharacters();
         comicTable()
+        getLocation()
+        getWeather()
     } else {
         loginPage()
     }
@@ -25,6 +27,8 @@ const dashboardPage = () => {
     $('span#fullname').html(localStorage.fullname)
     document.body.className = document.body.className.replace("no-javascript", "");
     showCharacters();
+    getLocation()
+    getWeather()
 }
 
 const showCharacters = () => {
@@ -308,6 +312,38 @@ function handleDoubleClick(id) {
             toastr.warning(err.responseJSON.message, 'Warning Alert')
         }
     })
+}
+
+function getLocation() {
+  navigator.geolocation.getCurrentPosition(foundLocation);
+  
+  function foundLocation(position) {
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+    localStorage.lat = lat
+    localStorage.lon = lon
+  }
+}
+
+function getWeather(){
+  const {lat,lon} = localStorage
+  const latitude = lat || -6.2146
+  const longitude = lon || 106.8451
+  $.ajax({
+    method: 'GET',
+    url: `${baseUrl}/weather/${latitude}/${longitude}`,
+    headers: {
+      access_token: localStorage.access_token
+    }
+  })
+  .done(response=>{
+    console.log(response);
+    $('#header-location').text(response.name)
+    $('#header-temp').text(Math.floor(response.main.temp))
+    $('#header-icon').attr('src',`http://openweathermap.org/img/w/${response.weather[0].icon}.png`)
+    $('#header-weather').text(response.weather[0].main)
+  })
+  .fail(err=>console.log(err))
 }
 
 toastr.options = {
