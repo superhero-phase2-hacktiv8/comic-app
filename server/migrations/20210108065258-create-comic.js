@@ -1,11 +1,17 @@
 'use strict';
 module.exports = {
     up: async(queryInterface, Sequelize) => {
-        await queryInterface.createTable('Characters', {
+        await queryInterface.createTable('Comics', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
+                type: Sequelize.INTEGER
+            },
+            title: {
+                type: Sequelize.STRING
+            },
+            comicId: {
                 type: Sequelize.INTEGER
             },
             userId: {
@@ -16,18 +22,6 @@ module.exports = {
                 },
                 onDelete: 'CASCADE',
                 onUpdate: 'CASCADE'
-            },
-            name: {
-                type: Sequelize.STRING
-            },
-            deck: {
-                type: Sequelize.TEXT
-            },
-            imgUrl: {
-                type: Sequelize.STRING
-            },
-            character_id: {
-                type: Sequelize.INTEGER
             },
             createdAt: {
                 allowNull: false,
@@ -40,6 +34,6 @@ module.exports = {
         });
     },
     down: async(queryInterface, Sequelize) => {
-        await queryInterface.dropTable('Characters');
+        await queryInterface.dropTable('Comics');
     }
 };
