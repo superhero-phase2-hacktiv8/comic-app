@@ -140,7 +140,8 @@ _Auth Endpoint_
 
 _Character Endpoint_
 - `POST /characters`
-- `POST /characters/search/:name`
+- `POST /characters/search`
+- `POST /characters/add
 
 **Get all character**
 ----
@@ -194,7 +195,7 @@ _Character Endpoint_
 
 * **URL**
 
-  /characters/search/:name
+  /characters/search
 
 * **Method**
 
