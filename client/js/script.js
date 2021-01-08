@@ -7,65 +7,8 @@ $(document).ready(function() {
         $('#manipulateMe').html(`Welcome to admin dashboard comic & superhero app ${localStorage.fullname}`)
         $('span#fullname').html(localStorage.fullname)
 
-        $('.js-example-basic-single').select2({
-            allowClear: true,
-            dropdownParent: $("#modal-character"),
-            placeholder: 'Pilih Charachter',
-            ajax: {
-                url: `${baseUrl}/characters/select2character`,
-                dataType: 'json',
-                headers: {
-                    access_token: localStorage.getItem('access_token')
-                },
-                data: function(params) {
-                    return {
-                        search: params.term
-                    }
-                },
-                processResults: function(data) {
-                    return {
-                        results: data.map(function(item) {
-                            return {
-                                id: item.id,
-                                text: item.name
-                            };
-                        }),
-                    }
-                },
-                cache: true
-            }
-        });
-
-        $('#modal-character form').on('submit', (e) => {
-            if (!e.isDefaultPrevented()) {
-                url = `${baseUrl}/characters/add`;
-                method = 'POST';
-                $.ajax({
-                    url,
-                    method,
-                    data: $('#modal-character form').serialize(),
-                    dataType: 'JSON',
-                    headers: {
-                        access_token: localStorage.access_token
-                    },
-                    success: (data) => {
-                        toastr.success('Successfully add new character!', 'Success Alert', { timeOut: 4000 });
-                        $('#modal-character').modal('hide');
-                        tableCharacter.ajax.reload(null, false);
-                    },
-                    error: (err) => {
-                        if (err.responseJSON.message === 'jwt expired') {
-                            toastr.info(`${err.responseJSON.message}`, 'session expired');
-                            $('#modal-todos').modal('hide');
-                            logout()
-                        } else {
-                            toastr.warning(err.responseJSON.message, 'Warning Alert')
-                        }
-                    }
-                });
-                return false;
-            }
-        });
+        modalCharacter()
+        select2character()
         dashboardPage()
         showCharacters();
         characterTable()
@@ -91,6 +34,70 @@ const dashboardPage = () => {
     showCharacters();
     getLocation()
     getWeather()
+}
+
+const modalCharacter = () => {
+    $('#modal-character form').on('submit', (e) => {
+        if (!e.isDefaultPrevented()) {
+            url = `${baseUrl}/characters/add`;
+            method = 'POST';
+            $.ajax({
+                url,
+                method,
+                data: $('#modal-character form').serialize(),
+                dataType: 'JSON',
+                headers: {
+                    access_token: localStorage.access_token
+                },
+                success: (data) => {
+                    toastr.success('Successfully add new character!', 'Success Alert', { timeOut: 4000 });
+                    $('#modal-character').modal('hide');
+                    tableCharacter.ajax.reload(null, false);
+                },
+                error: (err) => {
+                    if (err.responseJSON.message === 'jwt expired') {
+                        toastr.info(`${err.responseJSON.message}`, 'session expired');
+                        $('#modal-todos').modal('hide');
+                        logout()
+                    } else {
+                        toastr.warning(err.responseJSON.message, 'Warning Alert')
+                    }
+                }
+            });
+            return false;
+        }
+    });
+}
+
+const select2character = () => {
+    $('#character_id').select2({
+        allowClear: true,
+        dropdownParent: $("#modal-character"),
+        placeholder: 'Pilih Charachter',
+        ajax: {
+            url: `${baseUrl}/characters/select2character`,
+            dataType: 'json',
+            headers: {
+                access_token: localStorage.getItem('access_token')
+            },
+            data: function(params) {
+                return {
+                    search: params.term
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: data.map(function(item) {
+                        return {
+                            id: item.id,
+                            text: item.name
+                        };
+                    }),
+                }
+            },
+            cache: true
+        }
+    });
 }
 
 const showCharacters = () => {
@@ -350,7 +357,6 @@ $('#btnRegister').click((event) => {
             password
         },
         success: (data) => {
-            console.log(data);
             loginPage()
         },
         error: (err) => {
@@ -360,7 +366,6 @@ $('#btnRegister').click((event) => {
 })
 
 function handleDoubleClick(id) {
-    console.log(id);
     $(`#heart-${id}`).fadeIn(1000).fadeOut(1000)
     $.ajax({
         method: "POST",
@@ -399,7 +404,6 @@ function getWeather() {
             }
         })
         .done(response => {
-            console.log(response);
             $('#header-location').text(response.name)
             $('#header-temp').text(Math.floor(response.main.temp))
             $('#header-icon').attr('src', `http://openweathermap.org/img/w/${response.weather[0].icon}.png`)
