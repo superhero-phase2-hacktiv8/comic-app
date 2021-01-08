@@ -151,6 +151,7 @@ _Character Endpoint_
 
 * **URL**
 
+
   /characters
 
 * **Method**
