@@ -143,7 +143,7 @@ _Character Endpoint_
 - `POST /characters/search`
 - `POST /characters/add`
 - `GET /characters/favorite`
-- `POST /characters/:id`
+- `DELETE /characters/:id`
 
 **Get all character**
 ----
