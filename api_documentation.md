@@ -28,8 +28,10 @@ _Auth Endpoint_
 
   ```
   {
-    "email": "agus@gmail.com",
-    "password": "123123123"
+    "email": "rafli12@gmail.com",
+    "password": "123123123",
+    "firstName": "rafli",
+    "lastName": "rachmawandi"
   }
   ```
 
@@ -38,8 +40,17 @@ _Auth Endpoint_
   **Content:**
   ```
   {
-    "id": 1,
-    "email": "agus@gmail.com"
+    "status": "success",
+    "message": "successfully register new user",
+    "data": {
+        "id": 5,
+        "firstName": "rafli",
+        "lastName": "rachmawandi",
+        "email": "rafli12@gmail.com",
+        "password": "$2a$10$rQSYS92TqZfVRtQ7aVf8mORzmn8iv8aZyW1mYTk2JeQ5OhjimB6HK",
+        "updatedAt": "2021-01-07T23:41:45.685Z",
+        "createdAt": "2021-01-07T23:41:45.685Z"
+    }
   }
   ```
 
@@ -48,14 +59,19 @@ _Auth Endpoint_
   **Content:**
   ```
   {
-    <validation message>
+    "status": "error",
+    "message": [
+        "field password is required",
+        "password at least have 6 character"
+    ]
   }
   ```
   **Code:** 500 <br />
   **Content:**
   ```
   {
-    "message": "Internal server error"
+    "status": "error",
+    "message": <error_message>
   }
   ```
 
@@ -75,7 +91,7 @@ _Auth Endpoint_
 
   ```
   {
-    "email": "agus@gmail.com",
+    "email": "rafli12@gmail.com",
     "password": "123123123"
   }
   ```
@@ -85,7 +101,10 @@ _Auth Endpoint_
   **Content:**
   ```
   {
-    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJhZ3VzQGdtYWlsLmNvbSIsImlhdCI6MTYxMDAyNjMzNH0.5AsUmBNb3g8F3KVNMW0iziNvnAahsz2M3CQV8iRBC_Q"
+    "status": "success",
+    "message": "successfully login",
+    "fullname": "rafli rachmawandi",
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJyYWZsaTEyQGdtYWlsLmNvbSIsImlhdCI6MTYxMDA2Mjk5OSwiZXhwIjoxNjEwMTQ5Mzk5fQ.1iqFSiyS2gGaAWQc5NtRiYGbP113TwCqnZASIeAX_WA"
   }
   ```
 
@@ -94,20 +113,125 @@ _Auth Endpoint_
   **Content:**
   ```
   {
-    <validation message>
+    "status": "error",
+    "message": [
+        "field password is required",
+        "password at least have 6 character"
+    ]
   }
   ```
   **Code:** 401 <br />
   **Content:**
   ```
   {
-    "message": "invalid email / password"
+    "status": "error",
+    "message": "wrong email or password"
   }
   ```
   **Code:** 500 <br />
   **Content:**
   ```
   {
-    "message": "Internal server error"
+    "status": "error",
+    "message": <error_message>
+  }
+  ```
+<br>
+
+_Character Endpoint_
+- `POST /characters`
+- `POST /characters/search/:name`
+
+**Get all character**
+----
+
+* **URL**
+
+  /characters
+
+* **Method**
+
+  `GET`
+
+* **Request Headers**
+
+  ```
+  {
+    access_token : <your access_token>
+  }
+  ```
+
+* **Request Body**
+
+  ```
+  not needed
+  ```
+
+* **Success Response:** <br />
+  **Code:** 200 <br />
+  **Content:**
+  ```
+  [
+    {<object cheracther data>}, // name, id, imgUrl, etc.
+    {<object cheracther data>},
+    ...
+    {<object cheracther data>}
+  ]
+  ```
+
+* **Failed Response:** <br />
+  **Code:** 500 <br />
+  **Content:**
+  ```
+  {
+    "status": "error",
+    "message": <error_message>
+  }
+  ```
+
+**Search character by name**
+----
+
+* **URL**
+
+  /characters/search/:name
+
+* **Method**
+
+  `GET`
+
+* **Request Headers**
+
+  ```
+  {
+    access_token : <your access_token>
+  }
+  ```
+
+* **Request Body**
+
+  ```
+  not needed
+  ```
+
+* **Success Response:** <br />
+  **Code:** 200 <br />
+  **Content:**
+  ```
+  [
+    {<object cheracther data>}, // name, id, imgUrl, etc.
+    {<object cheracther data>},
+    ...
+    {<object cheracther data>}
+  ]
+  ```
+
+* **Failed Response:** <br />
+  **Code:** 500 <br />
+  **Content:**
+  ```
+  {
+    "status": "error",
+    "message": <error_message>
   }
   ```
